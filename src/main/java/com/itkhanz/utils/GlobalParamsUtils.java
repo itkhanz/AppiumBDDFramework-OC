@@ -1,6 +1,6 @@
 package com.itkhanz.utils;
 
-public class GlobalParams {
+public class GlobalParamsUtils {
     private static ThreadLocal<String> platformName = new ThreadLocal<String>();
     private static ThreadLocal<String> udid = new ThreadLocal<String>();
     private static ThreadLocal<String> deviceName = new ThreadLocal<String>();
@@ -66,7 +66,7 @@ public class GlobalParams {
     }
 
     public void initializeGlobalParams(){
-        GlobalParams params = new GlobalParams();
+        GlobalParamsUtils params = new GlobalParamsUtils();
         params.setPlatformName(System.getProperty("platformName", "Android"));
         params.setUDID(System.getProperty("udid", "emulator-5554"));
         params.setDeviceName(System.getProperty("deviceName", "Pixel_5"));

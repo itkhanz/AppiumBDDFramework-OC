@@ -1,6 +1,6 @@
 package com.itkhanz.factory;
 
-import com.itkhanz.utils.GlobalParams;
+import com.itkhanz.utils.GlobalParamsUtils;
 import com.itkhanz.utils.TestUtils;
 import io.appium.java_client.service.local.AppiumDriverLocalService;
 import io.appium.java_client.service.local.AppiumServerHasNotBeenStartedLocallyException;
@@ -14,7 +14,7 @@ import java.util.HashMap;
 public class ServerManager {
     private static ThreadLocal<AppiumDriverLocalService> server = new ThreadLocal<>();
     TestUtils utils = new TestUtils();
-    GlobalParams params = new GlobalParams();
+    GlobalParamsUtils params = new GlobalParamsUtils();
 
     public AppiumDriverLocalService getServer(){
         return server.get();
@@ -61,7 +61,7 @@ public class ServerManager {
     }
 
     private AppiumDriverLocalService getAppiumServiceForMac() {
-        GlobalParams params = new GlobalParams();
+        GlobalParamsUtils params = new GlobalParamsUtils();
         //comment this line if you are running tests through maven surefire plugin
         HashMap<String, String> environment = getEnvironmentMapForAppiumServer();
 

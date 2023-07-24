@@ -1,7 +1,7 @@
 package com.itkhanz.stepdef;
 
 import com.itkhanz.factory.ServerManager;
-import com.itkhanz.utils.GlobalParams;
+import com.itkhanz.utils.GlobalParamsUtils;
 import io.cucumber.java.After;
 import io.cucumber.java.AfterAll;
 import io.cucumber.java.Before;
@@ -13,7 +13,7 @@ import java.io.File;
 public class Hooks {
 
     ServerManager serverManager = new ServerManager();
-    GlobalParams params = new GlobalParams();
+    GlobalParamsUtils params = new GlobalParamsUtils();
 
     @BeforeAll
     public void beforeAll() {
@@ -25,8 +25,13 @@ public class Hooks {
     public void afterAll() {
         serverManager.stopServer();
     }
+
     @Before
     public void setup() {
+        //params.initializeGlobalParams();
+
+        //serverManager.startServer();
+
         String appLogsFilePath = "logs" + File.separator + params.getPlatformName() + "_" + params.getDeviceName();
         ThreadContext.put("ROUTINGKEY", appLogsFilePath);
     }
