@@ -55,5 +55,9 @@
 * Rename the step defs method arguments to reflect the parameters.
 * Change the `dryrun` to false, and remove the `throw new io.cucumber.java.PendingException();` from stepdefs.
 * Rerun the test to make sure that all the steps pass.
+* Copy the apps to `src/test/resources/apps` and add the app properties in `config.properties`
+* Add [log4j2 configurations](https://github.com/omprakashchavan01/log4j2_properties)
+* Add the log related utils in `TestUtils`
 * 
+
 ---
