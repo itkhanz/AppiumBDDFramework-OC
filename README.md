@@ -69,5 +69,6 @@
 * Create the PropertiesUtils to load the properties from config.properties
 * Create DriverManager and DriverOptionsManager to initialize the platform specific driver.
 * Initialise driver in Before hook and Quit in After hook (and set to null)
+* Add Base Page and Page Objects
 
 ---
