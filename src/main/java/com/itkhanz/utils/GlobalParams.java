@@ -7,6 +7,15 @@ public class GlobalParams {
     private static ThreadLocal<String> systemPort = new ThreadLocal<String>();
     private static ThreadLocal<String> chromeDriverPort = new ThreadLocal<String>();
     private static ThreadLocal<String> wdaLocalPort = new ThreadLocal<String>();
+    private static ThreadLocal<String> dateTime = new ThreadLocal<String>();
+
+    public String getDateTime() {
+        return dateTime.get();
+    }
+
+    private void setDateTime(String formattedDateTime) {
+        dateTime.set(formattedDateTime);
+    }
 
     public void setPlatformName(String platformName1){
         platformName.set(platformName1);
@@ -70,5 +79,7 @@ public class GlobalParams {
             case "iOS" -> params.setWdaLocalPort(System.getProperty("wdaLocalPort", "8100"));
             default -> throw new IllegalStateException("Invalid Platform Name!");
         }
+
+        setDateTime(TestUtils.getFormattedDateTime());
     }
 }

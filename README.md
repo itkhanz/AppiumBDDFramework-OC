@@ -65,6 +65,7 @@
   * iOS only: wdaLocalPort
   * Android only: systemPort, chromeDriverPort
 * We will declare them as ThreadLocal, so they support parallel execution.
+* create ServerManager to programmatically start the appium server.
 * 
 * 
 
