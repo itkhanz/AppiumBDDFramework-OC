@@ -1,4 +1,4 @@
-
+@login
 Feature: Login scenarios
 
   @test

@@ -2,6 +2,7 @@ package com.itkhanz.stepdef;
 
 import com.itkhanz.core.DriverManager;
 import com.itkhanz.core.ServerManager;
+import com.itkhanz.pages.BasePage;
 import com.itkhanz.utils.GlobalParamsUtils;
 import io.cucumber.java.After;
 import io.cucumber.java.AfterAll;
