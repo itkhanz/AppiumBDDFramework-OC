@@ -58,6 +58,8 @@
 * Copy the apps to `src/test/resources/apps` and add the app properties in `config.properties`
 * Add [log4j2 configurations](https://github.com/omprakashchavan01/log4j2_properties)
 * Add the log related utils in `TestUtils`
+* Add Cucumber hooks which will serve to start and stop the appium server, start and quit the appium driver session,
+  launch app, take screenshot and start/stop video recording of tests.
 * 
 
 ---
