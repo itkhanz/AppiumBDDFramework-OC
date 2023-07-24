@@ -2,6 +2,7 @@
 
 * This is a behavior driven test automation framework for mobile applications built with Appium Java and Cucumber.
 * This repo contains the source code for the framework designed during the [Omparkash Chavan Udemy Course](https://www.udemy.com/course/the-complete-appium-course-for-ios-and-android).
+* Refer to the [Appium TDD Framework](https://github.com/itkhanz/AppiumTDDFramework-OC) to get more understanding of the framework design and implementation details.
 
 ---
 
@@ -20,6 +21,20 @@
     * [Sauce Labs Native Sample Application](https://github.com/saucelabs/sample-app-mobile)
 * IntelliJ IDE
 
+---
+
+## Pre-requisites
+
+* Install Maven
+* Install Appium 2.0
+* Install uiautomator2, xcuitest drivers
+* Install Android Studio and setup Emulator
+* Install XCode and setup Simulator (only for MAC)
+* Configure Path variables as per your OS
+* Verify the setup with appium-doctor
+* Configure global properties in config.properties in src/main/resources
+* Build the pom.xml to download the dependencies
+
 --- 
 
 ## Framework 
@@ -34,20 +49,11 @@
 
 ## Notes
 
-### Features
-
-#### Login Feature file
-
-Scenarios:
-* Login with an invalid user name
-* Login with an invalid password
-* Login with a valid user name and password
-
-#### Products Feature file
-
-Scenarios:
-* Validate product info on Products page
-* Validate product info on Product Details page
-
-
+* Add feature files
+* Add [Cucumber JUnit Runner](https://cucumber.io/docs/cucumber/api/?lang=java#junit)
+* Run the Runner class in IntelliJ which will generate the code snippets for missing step definitions.
+* Rename the step defs method arguments to reflect the parameters.
+* Change the `dryrun` to false, and remove the `throw new io.cucumber.java.PendingException();` from stepdefs.
+* Rerun the test to make sure that all the steps pass.
+* 
 ---
