@@ -14,18 +14,18 @@ import java.io.IOException;
 
 public class Hooks {
 
-    GlobalParamsUtils params = new GlobalParamsUtils();
-    ServerManager serverManager = new ServerManager();
+    static GlobalParamsUtils params = new GlobalParamsUtils();
+    static ServerManager serverManager = new ServerManager();
     DriverManager driverManager = new DriverManager();
 
     @BeforeAll
-    public void beforeAll() {
+    public static void before_all() {
         params.initializeGlobalParams();
         serverManager.startServer();
     }
 
     @AfterAll
-    public void afterAll() {
+    public static void after_all() {
         serverManager.stopServer();
     }
 
@@ -35,8 +35,7 @@ public class Hooks {
 
         //serverManager.startServer();
 
-        String appLogsFilePath = "logs" + File.separator + params.getPlatformName() + "_" + params.getDeviceName();
-        ThreadContext.put("ROUTINGKEY", appLogsFilePath);
+        setRoutingForApplicationLogs();
 
         driverManager.initializeDriver();
     }
@@ -44,5 +43,15 @@ public class Hooks {
     @After
     public void teardown() {
         driverManager.quitDriver();
+    }
+
+    private void setRoutingForApplicationLogs() {
+        String logsFolderName = "logs" + File.separator + params.getPlatformName() + "_" + params.getDeviceName();
+        File logFolder = new File(logsFolderName);
+        if (!logFolder.exists()) {
+            logFolder.mkdirs();
+        }
+        //route logs to separate file for each thread
+        ThreadContext.put("ROUTINGKEY", logsFolderName); //LOG4J2
     }
 }
