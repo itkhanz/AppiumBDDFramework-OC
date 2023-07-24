@@ -60,6 +60,12 @@
 * Add the log related utils in `TestUtils`
 * Add Cucumber hooks which will serve to start and stop the appium server, start and quit the appium driver session,
   launch app, take screenshot and start/stop video recording of tests.
+* Create GlobalParams that enable use to collect the system properties sent from maven command line.
+  * Both Android and iOS: platformName, udid, deviceName
+  * iOS only: wdaLocalPort
+  * Android only: systemPort, chromeDriverPort
+* We will declare them as ThreadLocal, so they support parallel execution.
+* 
 * 
 
 ---
