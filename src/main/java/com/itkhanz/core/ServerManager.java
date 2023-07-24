@@ -1,4 +1,4 @@
-package com.itkhanz.factory;
+package com.itkhanz.core;
 
 import com.itkhanz.utils.GlobalParamsUtils;
 import com.itkhanz.utils.TestUtils;

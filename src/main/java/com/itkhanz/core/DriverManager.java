@@ -1,4 +1,4 @@
-package com.itkhanz.factory;
+package com.itkhanz.core;
 
 import com.itkhanz.utils.GlobalParamsUtils;
 import com.itkhanz.utils.PropertyUtils;
@@ -11,17 +11,26 @@ import java.io.IOException;
 
 public class DriverManager {
     private static ThreadLocal<AppiumDriver> driver = new ThreadLocal<>();
+    private static ThreadLocal<String> driverSessionID = new ThreadLocal<>();
     TestUtils utils = new TestUtils();
 
     public AppiumDriver getDriver(){
         return driver.get();
     }
 
-    public void setDriver(AppiumDriver driver2){
+    private void setDriver(AppiumDriver driver2){
         driver.set(driver2);
     }
 
-    public void initializeDriver() throws Exception {
+    public String getDriverSessionID() {
+        return driverSessionID.get();
+    }
+
+    private void setDriverSessionID(String sessionID) {
+        driverSessionID.set(sessionID);
+    }
+
+    public void initializeDriver() throws IOException {
         AppiumDriver driver = null;
         GlobalParamsUtils params = new GlobalParamsUtils();
         PropertyUtils props = new PropertyUtils();
@@ -35,10 +44,12 @@ public class DriverManager {
                         driver = new IOSDriver(new ServerManager().getServer().getUrl(), new DriverOptionsManager().getIOSOptions());
             }
             if(driver == null){
-                throw new Exception("driver is null. ABORT!!!");
+                throw new RuntimeException("driver is null. ABORT!!!");
             }
-            utils.log().info("******** Driver is initialized with session ID: " + getDriver().getSessionId().toString() + " ********");
-            DriverManager.driver.set(driver);
+
+            setDriver(driver);
+            setDriverSessionID(getDriver().getSessionId().toString());
+            utils.log().info("******** Driver is initialized with session ID: {} ***********", getDriverSessionID());
         } catch (IOException e) {
             e.printStackTrace();
             utils.log().fatal("******** Driver initialization failure. ABORT !!!!" + e.toString() + " ********");
@@ -50,7 +61,8 @@ public class DriverManager {
         if (getDriver()!= null)  {
             getDriver().quit();
             driver.remove();
-            utils.log().info("****** Appium Driver Session closed ********");
+            utils.log().info("******** Driver closed with session ID: {} ***********", getDriverSessionID());
+            driverSessionID.remove();
         }
     }
 }
