@@ -21,7 +21,7 @@ public class ServerManager {
     }
 
     public void startServer(){
-        setRoutingForServerLogs();
+        utils.setRoutingForServerLogs();
         utils.log().info("*********** Starting Appium Server ***********");
         AppiumDriverLocalService service = getAppiumServiceForMac();
         service.start();
@@ -108,13 +108,4 @@ public class ServerManager {
         return environment;
     }
 
-    private void setRoutingForServerLogs() {
-        String logsFolderName = "logs" + File.separator + "server" + File.separator + params.getDateTime();
-        File logFolder = new File(logsFolderName);
-        if (!logFolder.exists()) {
-            logFolder.mkdirs();
-        }
-        //route logs to separate file for each thread
-        ThreadContext.put("ROUTINGKEY", logsFolderName); //LOG4J2
-    }
 }

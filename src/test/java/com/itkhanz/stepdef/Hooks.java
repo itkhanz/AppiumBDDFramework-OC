@@ -43,7 +43,7 @@ public class Hooks {
 
         //serverManager.startServer();
 
-        setRoutingForApplicationLogs();
+        utils.setRoutingForApplicationLogs();
 
         driverManager.initializeDriver();
 
@@ -63,13 +63,5 @@ public class Hooks {
         driverManager.quitDriver();
     }
 
-    private void setRoutingForApplicationLogs() {
-        String logsFolderName = "logs" + File.separator + params.getPlatformName() + "_" + params.getDeviceName();
-        File logFolder = new File(logsFolderName);
-        if (!logFolder.exists()) {
-            logFolder.mkdirs();
-        }
-        //route logs to separate file for each thread
-        ThreadContext.put("ROUTINGKEY", logsFolderName); //LOG4J2
-    }
+
 }
