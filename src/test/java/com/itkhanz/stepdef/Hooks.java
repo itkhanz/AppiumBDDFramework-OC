@@ -2,20 +2,10 @@ package com.itkhanz.stepdef;
 
 import com.itkhanz.core.DriverManager;
 import com.itkhanz.core.ServerManager;
-import com.itkhanz.pages.BasePage;
-import com.itkhanz.utils.GlobalParamsUtils;
-import com.itkhanz.utils.ScreenshotUtils;
-import com.itkhanz.utils.TestUtils;
-import com.itkhanz.utils.VideoUtils;
+import com.itkhanz.utils.*;
 import io.cucumber.java.*;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.logging.log4j.ThreadContext;
-import org.openqa.selenium.OutputType;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
 
 public class Hooks {
 

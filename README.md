@@ -3,6 +3,7 @@
 * This is a behavior driven test automation framework for mobile applications built with Appium Java and Cucumber.
 * This repo contains the source code for the framework designed during the [Omparkash Chavan Udemy Course](https://www.udemy.com/course/the-complete-appium-course-for-ios-and-android).
 * Refer to the [Appium TDD Framework](https://github.com/itkhanz/AppiumTDDFramework-OC) to get more understanding of the framework design and implementation details.
+* The code for the original repo has been further refactored to incorporate clean coding practices.
 
 ---
 
@@ -83,6 +84,102 @@
 * This is how the logs and media are stored:
 
 <img src="doc/logs-and-media-folder-structure.png">
+
+* Moving server and driver initialisation from Cucumber hooks to JUnit's BeforeClass and AfterClass
+  * This step is not needed because we can use the cucumber beforeall and afterall hooks to initialize and end the server.
+* Added [maven-cucumber-reporting](https://github.com/damianszczepanik/maven-cucumber-reporting)
+  * This will need the cucumber json report to build the report, so add the json report plugin in test runner
+    * `json:target/cucumber/cucumber-report.json`
+  * Add the following to POM.xml
+  ```xml
+  <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire.version}</version>
+                <configuration>
+                    <testFailureIgnore>true</testFailureIgnore>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>net.masterthought</groupId>
+                <artifactId>maven-cucumber-reporting</artifactId>
+                <version>${maven-cucumber-reporting.version}</version>
+                <executions>
+                    <execution>
+                        <id>execution</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <projectName>Appium-BDD-Framework</projectName>
+                            <!-- optional, per documentation set this to "true" to bypass generation of Cucumber Reports entirely, defaults to false if not specified -->
+                            <skip>false</skip>
+                            <!-- output directory for the generated report -->
+                            <outputDirectory>${project.build.directory}</outputDirectory>
+                            <!-- optional, defaults to outputDirectory if not specified -->
+                            <inputDirectory>${project.build.directory}</inputDirectory>
+                            <jsonFiles>
+                                <!-- supports wildcard or name pattern -->
+                                <param>**/cucumber-report.json</param>
+                            </jsonFiles>
+                            <classificationFiles>
+                                <!-- supports wildcard or name pattern -->
+                                <param>**/project.properties</param>
+                            </classificationFiles>
+                            <!-- optional, set true to group features by its Ids -->
+                            <mergeFeaturesById>false</mergeFeaturesById>
+                            <!-- optional, set true to get a final report with latest results of the same test from different test runs -->
+                            <mergeFeaturesWithRetest>false</mergeFeaturesWithRetest>
+                            <!-- optional, set true to fail build on test failures -->
+                            <checkBuildResult>true</checkBuildResult>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+  </build>
+  ```
+  * I also added the project related properties in `project.properties` which gets imported to report.
+  ```java
+  owner=itkhanz
+  Application=Sauce Labs Native Sample Application
+  Operating-system=${os.name}
+  Appium-server=2.0
+  Appium-client=${appium-java-client-version}
+  JDK=${java.release.version}
+  Masterthought-report=${maven-cucumber-reporting.version}
+  ```
+  * Run the tests from maven commandline in usual way
+  * Now the report will be generated in `target/cucumber-html-reports` folder  
+  * Here is how the report will look like:
+
+<img src="doc/report-features.png" width="1200">
+
+<img src="doc/report-scenarios.png" width="1200">
+
+<img src="doc/report-tags.png" width="1200">
+
+<img src="doc/report-steps.png" width="1200">
+
+<img src="doc/report-failures.png" width="1200">
+
+* Reading resources for masterthought reporting:
+  * [cucumber-reporting](https://github.com/damianszczepanik/cucumber-reporting)
+  * [cucumber-reporting sample configuration](https://github.com/damianszczepanik/cucumber-reporting/blob/master/src/test/java/LiveDemoTest.java)
+  * [cucumber-reporting jenkins configuration](https://github.com/jenkinsci/cucumber-reports-plugin/wiki/Detailed-Configuration)
+  * [maven mojo for cucumber reporting](https://github.com/damianszczepanik/maven-cucumber-reporting)
+  * [MVN Repository for maven-cucumber-reporting](https://mvnrepository.com/artifact/net.masterthought/maven-cucumber-reporting)
+  * [MVN Repository for cucumber-reporting](https://mvnrepository.com/artifact/net.masterthought/cucumber-reporting)
+  * [Maven System Properties](https://stackoverflow.com/a/8967292/7673215)
 
 * 
 

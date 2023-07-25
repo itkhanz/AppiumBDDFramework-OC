@@ -14,7 +14,10 @@ import static io.cucumber.junit.CucumberOptions.SnippetType.CAMELCASE;
         ,dryRun=false
         ,monochrome=true
         ,plugin = {
-                "pretty", "summary", "html:target/cucumber/report.html"
+                "pretty",
+                "summary",
+                "html:target/cucumber/cucumber-report.html",
+                "json:target/cucumber/cucumber-report.json"
         }
         ,tags = "@test"
 
