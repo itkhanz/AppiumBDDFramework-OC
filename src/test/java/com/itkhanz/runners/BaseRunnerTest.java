@@ -8,7 +8,7 @@ import static io.cucumber.junit.CucumberOptions.SnippetType.CAMELCASE;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-        features = {"src/test/resources/features/login.feature"}
+        features = {"src/test/resources/features"}
         ,glue = {"com.itkhanz.stepdef"}
         ,snippets = CAMELCASE
         ,dryRun=false
@@ -17,7 +17,7 @@ import static io.cucumber.junit.CucumberOptions.SnippetType.CAMELCASE;
                 "pretty",
                 "summary",
                 "html:target/cucumber/cucumber-report.html",
-                "json:target/cucumber/cucumber-report.json"
+//                "json:target/cucumber/cucumber-report.json"
         }
         ,tags = "@test"
 

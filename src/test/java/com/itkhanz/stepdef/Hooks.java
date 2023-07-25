@@ -5,6 +5,7 @@ import com.itkhanz.core.ServerManager;
 import com.itkhanz.utils.*;
 import io.cucumber.java.*;
 
+import java.io.File;
 import java.io.IOException;
 
 public class Hooks {
@@ -51,6 +52,7 @@ public class Hooks {
         videoUtils.stopRecording(scenario);
 
         driverManager.quitDriver();
+
     }
 
 

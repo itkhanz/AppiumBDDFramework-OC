@@ -24,6 +24,10 @@
         <maven-surefire.version>3.1.2</maven-surefire.version>
         <cucumber-reporting.version>5.7.5</cucumber-reporting.version>
         <maven-cucumber-reporting.version>5.7.5</maven-cucumber-reporting.version>
+
+        <!--These properties get replaced by the command line arguments from Maven-->
+        <platformName>platform</platformName>
+        <deviceName>device</deviceName>
     </properties>
 
     <dependencies>
@@ -124,13 +128,19 @@
                             <!-- optional, per documentation set this to "true" to bypass generation of Cucumber Reports entirely, defaults to false if not specified -->
                             <skip>false</skip>
                             <!-- output directory for the generated report -->
-                            <outputDirectory>${project.build.directory}</outputDirectory>
+                            <outputDirectory>${project.build.directory}/${platformName}/${deviceName}</outputDirectory>
                             <!-- optional, defaults to outputDirectory if not specified -->
-                            <inputDirectory>${project.build.directory}</inputDirectory>
+                            <inputDirectory>cucumber-reports/${platformName}/${deviceName}</inputDirectory>
                             <jsonFiles>
                                 <!-- supports wildcard or name pattern -->
                                 <param>**/cucumber-report.json</param>
                             </jsonFiles>
+                            <!-- optional, defaults to outputDirectory if not specified -->
+                            <classificationDirectory>${project.build.directory}</classificationDirectory>
+                            <classifications>
+                                <platform>${platformName}</platform>
+                                <device>${deviceName}</device>
+                            </classifications>
                             <classificationFiles>
                                 <!-- supports wildcard or name pattern -->
                                 <param>**/project.properties</param>
