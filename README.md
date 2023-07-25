@@ -72,7 +72,11 @@
 * Add Base Page and Page Objects
 * Update step definitions with the method from page objects
 * You can run the tests also from commandline:
-  * mvn clean test -D"platformName=Android" -D"udid=emulator-5554" -D"deviceName=Pixel_5" -D"systemPort=10002" -D"chromeDriverPort=11002"
-  * mvn clean test -D"platformName=iOS" -D"udid=1E8FE39B-1118-4117-B02B-66A390AECB3F" -D"deviceName=iPhone 14" -D"wdaLocalPort=8101"
+  * If no system parameters are provided, then the tests will run by default on Android emulator-5554
+  * `mvn clean test -D"platformName=Android" -D"udid=emulator-5554" -D"deviceName=Pixel_5" -D"systemPort=10002" -D"chromeDriverPort=11002"`
+  * `mvn clean test -D"platformName=iOS" -D"udid=1E8FE39B-1118-4117-B02B-66A390AECB3F" -D"deviceName=iPhone 14" -D"wdaLocalPort=8101"`
 
+* Embed screenshot in report on test failure.
+* 
+* 
 ---

@@ -4,11 +4,9 @@ import com.itkhanz.core.DriverManager;
 import com.itkhanz.core.ServerManager;
 import com.itkhanz.pages.BasePage;
 import com.itkhanz.utils.GlobalParamsUtils;
-import io.cucumber.java.After;
-import io.cucumber.java.AfterAll;
-import io.cucumber.java.Before;
-import io.cucumber.java.BeforeAll;
+import io.cucumber.java.*;
 import org.apache.logging.log4j.ThreadContext;
+import org.openqa.selenium.OutputType;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,7 +40,13 @@ public class Hooks {
     }
 
     @After
-    public void teardown() {
+    public void teardown(Scenario scenario) {
+        //capture screenshot on failure and embed to report
+        if (scenario.isFailed()) {
+            byte[] screenshot = driverManager.getDriver().getScreenshotAs(OutputType.BYTES);
+            scenario.attach(screenshot, "image/png", scenario.getName());
+        }
+
         driverManager.quitDriver();
     }
 
