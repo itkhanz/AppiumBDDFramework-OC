@@ -77,6 +77,13 @@
   * `mvn clean test -D"platformName=iOS" -D"udid=1E8FE39B-1118-4117-B02B-66A390AECB3F" -D"deviceName=iPhone 14" -D"wdaLocalPort=8101"`
 
 * Embed screenshot in report on test failure.
+* save screenshot to local disk.
+* Move all the screenshot related to separate utility class
+* create VideoUtils to record videos for test execution
+* This is how the logs and media are stored:
+
+<img src="doc/logs-and-media-folder-structure.png">
+
 * 
-* 
+
 ---

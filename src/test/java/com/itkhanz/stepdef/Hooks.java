@@ -4,18 +4,27 @@ import com.itkhanz.core.DriverManager;
 import com.itkhanz.core.ServerManager;
 import com.itkhanz.pages.BasePage;
 import com.itkhanz.utils.GlobalParamsUtils;
+import com.itkhanz.utils.ScreenshotUtils;
+import com.itkhanz.utils.TestUtils;
+import com.itkhanz.utils.VideoUtils;
 import io.cucumber.java.*;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.ThreadContext;
 import org.openqa.selenium.OutputType;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 
 public class Hooks {
 
+    TestUtils utils = new TestUtils();
     static GlobalParamsUtils params = new GlobalParamsUtils();
     static ServerManager serverManager = new ServerManager();
     DriverManager driverManager = new DriverManager();
+    VideoUtils videoUtils = new VideoUtils();
+    ScreenshotUtils screenshotUtils = new ScreenshotUtils();
 
     @BeforeAll
     public static void before_all() {
@@ -37,15 +46,19 @@ public class Hooks {
         setRoutingForApplicationLogs();
 
         driverManager.initializeDriver();
+
+        videoUtils.startRecording();
     }
 
     @After
-    public void teardown(Scenario scenario) {
-        //capture screenshot on failure and embed to report
+    public void teardown(Scenario scenario) throws IOException {
+
         if (scenario.isFailed()) {
-            byte[] screenshot = driverManager.getDriver().getScreenshotAs(OutputType.BYTES);
-            scenario.attach(screenshot, "image/png", scenario.getName());
+            screenshotUtils.attachScreenshotToReport(scenario);
+            screenshotUtils.saveScreenshotLocally(scenario);
         }
+
+        videoUtils.stopRecording(scenario);
 
         driverManager.quitDriver();
     }
