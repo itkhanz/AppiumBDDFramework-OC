@@ -1,5 +1,7 @@
 package com.itkhanz.runners;
 
+import com.itkhanz.core.ServerManager;
+import com.itkhanz.utils.GlobalParamsUtils;
 import io.cucumber.testng.*;
 import org.testng.ITestContext;
 import org.testng.annotations.*;
@@ -24,6 +26,8 @@ import static io.cucumber.testng.CucumberOptions.SnippetType.CAMELCASE;
 public class MyTestNGRunnerTest {
     private TestNGCucumberRunner testNGCucumberRunner;
 
+    static ServerManager serverManager = new ServerManager();
+
     @Parameters({"platformName", "deviceName", "udid",
                 "systemPort", "chromeDriverPort",
                 "wdaLocalPort"})
@@ -33,6 +37,26 @@ public class MyTestNGRunnerTest {
                            @Optional("10000")String systemPort,
                            @Optional("11000")String chromeDriverPort,
                            @Optional("8100")String wdaLocalPort) {
+
+        //Initializing the global params
+        GlobalParamsUtils params = new GlobalParamsUtils();
+        params.setPlatformName(platformName);
+        params.setUDID(udid);
+        params.setDeviceName(deviceName);
+
+        switch (platformName) {
+            case "Android" -> {
+                params.setSystemPort(systemPort);
+                params.setChromeDriverPort(chromeDriverPort);
+            }
+            case "iOS" -> {
+                params.setWdaLocalPort(wdaLocalPort);
+            }
+        }
+
+        //start the appium server
+        serverManager.startServer();
+
         XmlTest currentXmlTest = context.getCurrentXmlTest();
         CucumberPropertiesProvider properties = currentXmlTest::getParameter;
         testNGCucumberRunner = new TestNGCucumberRunner(this.getClass(), properties);
@@ -50,6 +74,9 @@ public class MyTestNGRunnerTest {
 
     @AfterClass(alwaysRun = true)
     public void tearDownClass() {
-        testNGCucumberRunner.finish();
+        if(testNGCucumberRunner != null) testNGCucumberRunner.finish();
+
+        //stop the appium server
+        serverManager.stopServer();
     }
 }

@@ -12,14 +12,14 @@ public class Hooks {
 
     //TODO Add dependency injection with Guice or Pico Container
 
+    //static GlobalParamsUtils params = new GlobalParamsUtils();
+    //static ServerManager serverManager = new ServerManager();
     TestUtils utils = new TestUtils();
-    static GlobalParamsUtils params = new GlobalParamsUtils();
-    static ServerManager serverManager = new ServerManager();
     DriverManager driverManager = new DriverManager();
     VideoUtils videoUtils = new VideoUtils();
     ScreenshotUtils screenshotUtils = new ScreenshotUtils();
 
-    @BeforeAll
+    /*@BeforeAll
     public static void before_all() {
         params.initializeGlobalParams();
         serverManager.startServer();
@@ -28,13 +28,10 @@ public class Hooks {
     @AfterAll
     public static void after_all() {
         serverManager.stopServer();
-    }
+    }*/
 
     @Before
     public void setup() throws IOException {
-        //params.initializeGlobalParams();
-
-        //serverManager.startServer();
 
         utils.setRoutingForApplicationLogs();
 

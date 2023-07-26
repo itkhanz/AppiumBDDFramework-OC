@@ -314,6 +314,12 @@
   * Apart from reducing execution time, we also want to increase the device coverage i.e. each scenario should run on multiple devices.
   * This option does not enable us to run each scenario in parallel on multiple devices.
 * [cucumber-jvm RunCucumberByCompositionTest example](https://github.com/cucumber/cucumber-jvm/blob/main/examples/calculator-java-testng/src/test/java/io/cucumber/examples/calculator/RunCucumberByCompositionTest.java)
-  * 
+  * We will be using this option.
+* To initialize the global parameters using `initializeGlobalParams()`, we were previously initilaizing them with system
+  properties in case of JUnit runner. but this timme we will be getting these variables from testng.xml and not from the
+  maven command.
+* So we will initialize GlobalParams in the BeforeClass of testng using setters.
+* Move the server start and stop from cucumber hooks to testng before and after class.
+* 
 
 ---
