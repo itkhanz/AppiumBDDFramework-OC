@@ -20,8 +20,8 @@ import static io.cucumber.testng.CucumberOptions.SnippetType.CAMELCASE;
         "summary",
         "html:target/cucumber/cucumber-report.html",
 //                "json:target/cucumber/cucumber-report.json"
-}
-        ,tags = "@test"
+        }
+//        ,tags = "@test"
 )
 public class MyTestNGRunnerTest {
     private TestNGCucumberRunner testNGCucumberRunner;

@@ -322,6 +322,7 @@
 * Move the server start and stop from cucumber hooks to testng before and after class.
 * Change the assertions from JUnit to TestNG
 * Run the tests with:
-  * `mvn clean test -D"platformName=Android" -D"deviceName=Pixel_5" -D"cucumber.plugin=json:cucumber-reports/Android/Pixel_5/cucumber-report.json"`
+  * `mvn clean test -D"platformName=iOS" -D"deviceName=iPhone 14" -D"udid=1E8FE39B-1118-4117-B02B-66A390AECB3F" -D"cucumber.plugin=json:cucumber-reports/iOS/iPhone 14/cucumber-report.json"`
+  * `mvn clean test -D"platformName=Android" -D"deviceName=Pixel 5" -D"cucumber.plugin=json:cucumber-reports/Android/Pixel_5/cucumber-report.json"`
 
 ---
