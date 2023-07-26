@@ -51,6 +51,7 @@
 
 ## Notes
 
+* [Cucumber Reference](https://cucumber.io/docs/cucumber/api/?lang=java)
 * Add feature files
 * Add [Cucumber JUnit Runner](https://cucumber.io/docs/cucumber/api/?lang=java#junit)
 * Run the Runner class in IntelliJ which will generate the code snippets for missing step definitions.
@@ -194,7 +195,6 @@
   where the multithreading fails for cucumber and the mobile automation. This is not applicable for selenium. Selenium,
   you can still go with Multithreading with cucumber, but for mobile application, I don't recommend it. So the only
   option we have is to go with the separate JVM process.
-* 
 * To run the tests in parallel and be able to generate separate reports for all the devices, we need to do some
   modifications in our current setup:
   * We are generating the cucumber json reports for both the test executions at separate path because this json report
@@ -300,6 +300,20 @@
 
 <img src="doc/report-ios.png" width="1200">
 
-* 
+
+### Cucumber Parallel Test Execution with TestNG
+
+* With JUnit, we were running tests in separate JVM (Java Virtual Machine) processes. With TestNG, we are going to run
+  tests in separate threads under a single JVM.
+* Add Cucumber TestNG dependency and test runner
+* [Cucumber Parallel execution TestNG](https://cucumber.io/docs/guides/parallel-execution/?lang=java#testng)
+* [cucumber-jvm AbstractTestNGCucumberTests example](https://github.com/cucumber/cucumber-jvm/blob/main/examples/calculator-java-testng/src/test/java/io/cucumber/examples/calculator/RunCucumberTest.java)
+  * Let the runner inherit AbstractTestNGCucumberTests. Each scenario will then be executed as a separate TestNG test.
+  * This will work fine in case of web automation where you want scenarios to run in parallel on multiple browsers.
+  * This is not suitable for mobile automation because we cannot have 100 devices to run 100 scenarios in parallel.
+  * Apart from reducing execution time, we also want to increase the device coverage i.e. each scenario should run on multiple devices.
+  * This option does not enable us to run each scenario in parallel on multiple devices.
+* [cucumber-jvm RunCucumberByCompositionTest example](https://github.com/cucumber/cucumber-jvm/blob/main/examples/calculator-java-testng/src/test/java/io/cucumber/examples/calculator/RunCucumberByCompositionTest.java)
+  * 
 
 ---

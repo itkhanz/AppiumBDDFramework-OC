@@ -10,6 +10,8 @@ import java.io.IOException;
 
 public class Hooks {
 
+    //TODO Add dependency injection with Guice or Pico Container
+
     TestUtils utils = new TestUtils();
     static GlobalParamsUtils params = new GlobalParamsUtils();
     static ServerManager serverManager = new ServerManager();

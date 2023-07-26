@@ -9,6 +9,8 @@ import io.cucumber.java.en.When;
 import org.junit.Assert;
 
 public class ProductStepDef {
+    //TODO login with Deeplink
+
     @Given("I'm logged in")
     public void iMLoggedIn() {
         //TODO get it from external config file

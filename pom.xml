@@ -15,7 +15,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <appium-java-client-version>8.5.1</appium-java-client-version>
         <cucumber-java.version>7.13.0</cucumber-java.version>
-        <cucumber-junit.version>7.13.0</cucumber-junit.version>
+        <!--<cucumber-junit.version>7.13.0</cucumber-junit.version>-->
+        <cucumber-testng.version>7.13.0</cucumber-testng.version>
         <json.version>20230618</json.version>
         <commons-codec.version>1.16.0</commons-codec.version>
         <log4j-core.version>2.20.0</log4j-core.version>
@@ -24,6 +25,7 @@
         <maven-surefire.version>3.1.2</maven-surefire.version>
         <cucumber-reporting.version>5.7.5</cucumber-reporting.version>
         <maven-cucumber-reporting.version>5.7.5</maven-cucumber-reporting.version>
+        <suite-xml>testng.xml</suite-xml>
 
         <!--These properties get replaced by the command line arguments from Maven-->
         <platformName>platform</platformName>
@@ -45,12 +47,19 @@
             <version>${cucumber-java.version}</version>
         </dependency>
 
-        <dependency>
+        <!--<dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-junit</artifactId>
             <version>${cucumber-junit.version}</version>
-            <scope>test</scope>
+        </dependency>-->
+
+        <!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-testng -->
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-testng</artifactId>
+            <version>${cucumber-testng.version}</version>
         </dependency>
+
 
         <!-- https://mvnrepository.com/artifact/org.json/json -->
         <dependency>
@@ -110,6 +119,9 @@
                 <version>${maven-surefire.version}</version>
                 <configuration>
                     <testFailureIgnore>true</testFailureIgnore>
+                    <suiteXmlFiles>
+                        <suiteXmlFile>${suite-xml}</suiteXmlFile>
+                    </suiteXmlFiles>
                 </configuration>
             </plugin>
             <plugin>

@@ -1,4 +1,4 @@
-package com.itkhanz.runners;
+/*package com.itkhanz.runners;
 
 import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
@@ -23,4 +23,4 @@ import static io.cucumber.junit.CucumberOptions.SnippetType.CAMELCASE;
 
 )
 public class BaseRunnerTest {
-}
+}*/
