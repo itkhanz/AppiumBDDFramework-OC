@@ -26,10 +26,6 @@
         <cucumber-reporting.version>5.7.5</cucumber-reporting.version>
         <maven-cucumber-reporting.version>5.7.5</maven-cucumber-reporting.version>
         <suite-xml>testng.xml</suite-xml>
-
-        <!--These properties get replaced by the command line arguments from Maven-->
-        <platformName>platform</platformName>
-        <deviceName>device</deviceName>
     </properties>
 
     <dependencies>
@@ -97,11 +93,11 @@
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/net.masterthought/cucumber-reporting -->
-        <!--<dependency>
+        <dependency>
             <groupId>net.masterthought</groupId>
             <artifactId>cucumber-reporting</artifactId>
             <version>${cucumber-reporting.version}</version>
-        </dependency>-->
+        </dependency>
 
     </dependencies>
 
@@ -118,13 +114,13 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven-surefire.version}</version>
                 <configuration>
-                    <testFailureIgnore>true</testFailureIgnore>
+                    <!--<testFailureIgnore>true</testFailureIgnore>-->
                     <suiteXmlFiles>
                         <suiteXmlFile>${suite-xml}</suiteXmlFile>
                     </suiteXmlFiles>
                 </configuration>
             </plugin>
-            <plugin>
+            <!--<plugin>
                 <groupId>net.masterthought</groupId>
                 <artifactId>maven-cucumber-reporting</artifactId>
                 <version>${maven-cucumber-reporting.version}</version>
@@ -137,36 +133,36 @@
                         </goals>
                         <configuration>
                             <projectName>Appium-BDD-Framework</projectName>
-                            <!-- optional, per documentation set this to "true" to bypass generation of Cucumber Reports entirely, defaults to false if not specified -->
+                            &lt;!&ndash; optional, per documentation set this to "true" to bypass generation of Cucumber Reports entirely, defaults to false if not specified &ndash;&gt;
                             <skip>false</skip>
-                            <!-- output directory for the generated report -->
-                            <outputDirectory>${project.build.directory}/${platformName}/${deviceName}</outputDirectory>
-                            <!-- optional, defaults to outputDirectory if not specified -->
-                            <inputDirectory>cucumber-reports/${platformName}/${deviceName}</inputDirectory>
+                            &lt;!&ndash; output directory for the generated report &ndash;&gt;
+                            <outputDirectory>${project.build.directory}</outputDirectory>
+                            &lt;!&ndash; optional, defaults to outputDirectory if not specified &ndash;&gt;
+                            <inputDirectory>${project.build.directory}/cucumber</inputDirectory>
                             <jsonFiles>
-                                <!-- supports wildcard or name pattern -->
-                                <param>**/cucumber-report.json</param>
+                                &lt;!&ndash; supports wildcard or name pattern &ndash;&gt;
+                                <param>**/*.json</param>
                             </jsonFiles>
-                            <!-- optional, defaults to outputDirectory if not specified -->
+                            &lt;!&ndash; optional, defaults to outputDirectory if not specified &ndash;&gt;
                             <classificationDirectory>${project.build.directory}</classificationDirectory>
                             <classifications>
-                                <platform>${platformName}</platform>
-                                <device>${deviceName}</device>
+                                <Android>${e}</Android>
+                                <iOS>${iOSInfo}</iOS>
                             </classifications>
                             <classificationFiles>
-                                <!-- supports wildcard or name pattern -->
+                                &lt;!&ndash; supports wildcard or name pattern &ndash;&gt;
                                 <param>**/project.properties</param>
                             </classificationFiles>
-                            <!-- optional, set true to group features by its Ids -->
+                            &lt;!&ndash; optional, set true to group features by its Ids &ndash;&gt;
                             <mergeFeaturesById>false</mergeFeaturesById>
-                            <!-- optional, set true to get a final report with latest results of the same test from different test runs -->
+                            &lt;!&ndash; optional, set true to get a final report with latest results of the same test from different test runs &ndash;&gt;
                             <mergeFeaturesWithRetest>false</mergeFeaturesWithRetest>
-                            <!-- optional, set true to fail build on test failures -->
+                            &lt;!&ndash; optional, set true to fail build on test failures &ndash;&gt;
                             <checkBuildResult>true</checkBuildResult>
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin>-->
         </plugins>
     </build>
 

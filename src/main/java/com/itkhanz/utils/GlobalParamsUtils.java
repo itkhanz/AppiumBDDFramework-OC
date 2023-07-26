@@ -2,6 +2,7 @@ package com.itkhanz.utils;
 
 public class GlobalParamsUtils {
     private static ThreadLocal<String> platformName = new ThreadLocal<String>();
+    private static ThreadLocal<String> platformVersion = new ThreadLocal<String>();
     private static ThreadLocal<String> udid = new ThreadLocal<String>();
     private static ThreadLocal<String> deviceName = new ThreadLocal<String>();
     private static ThreadLocal<String> systemPort = new ThreadLocal<String>();
@@ -13,7 +14,7 @@ public class GlobalParamsUtils {
         return dateTime.get();
     }
 
-    private void setDateTime(String formattedDateTime) {
+    public void setDateTime(String formattedDateTime) {
         dateTime.set(formattedDateTime);
     }
 
@@ -23,6 +24,14 @@ public class GlobalParamsUtils {
 
     public String getPlatformName(){
         return platformName.get();
+    }
+
+    public void setplatformVersion(String platformVersion1){
+        platformVersion.set(platformVersion1);
+    }
+
+    public String getplatformVersion(){
+        return platformVersion.get();
     }
 
     public String getUDID() {

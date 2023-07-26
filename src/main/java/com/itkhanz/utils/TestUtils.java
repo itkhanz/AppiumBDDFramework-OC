@@ -36,6 +36,7 @@ public class TestUtils {
         if (!logFolder.exists()) {
             logFolder.mkdirs();
         }
+
         //route logs to separate file for each thread
         ThreadContext.put("ROUTINGKEY", logsFolderName); //LOG4J2
     }

@@ -31,6 +31,7 @@ public class ServerManager {
         }
         service.clearOutPutStreams(); // -> Comment this if you want to see server logs in the console
         server.set(service);
+        System.setProperty("APPIUM_SERVER_IP_ADDRESS", String.valueOf(getServer().getUrl()));
         utils.log().info("*********** Appium Server Started Successfully ***********");
     }
 

@@ -1,5 +1,5 @@
 @products
-Feature: Product scenarios
+Feature: Product info
 
   @test
   Scenario Outline: Validate product info on Products page

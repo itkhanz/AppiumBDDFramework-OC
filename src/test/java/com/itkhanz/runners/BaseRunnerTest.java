@@ -1,3 +1,10 @@
+/*
+ **********************************************************************
+ * This Runner Class is a legacy JUnit Runner class.
+ * Now we are using the separate TestNG runner classes inheriting from the base runner class to pass separately to each test in testng.xml
+ **********************************************************************
+ */
+
 /*package com.itkhanz.runners;
 
 import io.cucumber.junit.Cucumber;

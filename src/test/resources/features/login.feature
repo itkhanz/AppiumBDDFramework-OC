@@ -1,5 +1,5 @@
 @login
-Feature: Login scenarios
+Feature: Login combinations
 
   @test
   Scenario Outline: Login with invalid user name

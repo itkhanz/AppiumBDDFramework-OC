@@ -1,11 +1,19 @@
+/*
+**********************************************************************
+* This Runner Class is a legacy TestNG Runner class that was used to run tests sequentially.
+* Now we are using the separate runner classes inheriting from the base runner class to pass separately to each test in testng.xml
+**********************************************************************
+ */
+
+/*
 package com.itkhanz.runners;
 
-import com.itkhanz.core.ServerManager;
-import com.itkhanz.utils.GlobalParamsUtils;
-import io.cucumber.testng.*;
-import org.testng.ITestContext;
-import org.testng.annotations.*;
-import org.testng.xml.XmlTest;
+//import com.itkhanz.core.ServerManager;
+//import com.itkhanz.utils.GlobalParamsUtils;
+//import io.cucumber.testng.*;
+//import org.testng.ITestContext;
+//import org.testng.annotations.*;
+//import org.testng.xml.XmlTest;
 
 import static io.cucumber.testng.CucumberOptions.SnippetType.CAMELCASE;
 
@@ -19,9 +27,8 @@ import static io.cucumber.testng.CucumberOptions.SnippetType.CAMELCASE;
         "pretty",
         "summary",
         "html:target/cucumber/cucumber-report.html",
-//                "json:target/cucumber/cucumber-report.json"
         }
-//        ,tags = "@test"
+        ,tags = "@test"
 )
 public class MyTestNGRunnerTest {
     private TestNGCucumberRunner testNGCucumberRunner;
@@ -38,7 +45,6 @@ public class MyTestNGRunnerTest {
                            @Optional("11000")String chromeDriverPort,
                            @Optional("8100")String wdaLocalPort) {
 
-        //Initializing the global params
         GlobalParamsUtils params = new GlobalParamsUtils();
         params.setPlatformName(platformName);
         params.setUDID(udid);
@@ -54,7 +60,6 @@ public class MyTestNGRunnerTest {
             }
         }
 
-        //start the appium server
         serverManager.startServer();
 
         XmlTest currentXmlTest = context.getCurrentXmlTest();
@@ -76,7 +81,7 @@ public class MyTestNGRunnerTest {
     public void tearDownClass() {
         if(testNGCucumberRunner != null) testNGCucumberRunner.finish();
 
-        //stop the appium server
         serverManager.stopServer();
     }
 }
+*/

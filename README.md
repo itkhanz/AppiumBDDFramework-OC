@@ -321,8 +321,165 @@
 * So we will initialize GlobalParams in the BeforeClass of testng using setters.
 * Move the server start and stop from cucumber hooks to testng before and after class.
 * Change the assertions from JUnit to TestNG
-* Run the tests with:
-  * `mvn clean test -D"platformName=iOS" -D"deviceName=iPhone 14" -D"udid=1E8FE39B-1118-4117-B02B-66A390AECB3F" -D"cucumber.plugin=json:cucumber-reports/iOS/iPhone 14/cucumber-report.json"`
-  * `mvn clean test -D"platformName=Android" -D"deviceName=Pixel 5" -D"cucumber.plugin=json:cucumber-reports/Android/Pixel_5/cucumber-report.json"`
+* To run the tests in parallel:
+  * Make `TestNGCucumberRunner` thread-safe and create separate test runners for android and iOS that extends from the
+    base runner to avoid code duplication.
+  * We also changed the path for html report generation for both the test runner classes.
+  * Pass the newly created test runner classes to testng.xml
+  * This time since we are using single JVM Process with multipile threads and have separate test runners, we can specify different json paths for cucumber report in the test runner itself:
+    * `"json:target/cucumber/ios-cucumber-report.json"` for IOSTestNGRunnerTest
+    * `"json:target/cucumber/android-cucumber-report.json"` for AndroidTestNGRunnerTest
+  * Since this time we are running a single JVM Process so we cannot specify a differnt `outputDirectory`
+    and `inputDirectory` based on the platform and device because we are not passing this information through
+    commandline, rather we are setting these parameters through testng.xml
+  * So we need a different way to generate the report dynamically and be able to differentiate the features in report based on platform and device information.
+  * Instead of adding the reporting configuration in POM.xml, we will add the [cucumber-reporting](https://mvnrepository.com/artifact/net.masterthought/cucumber-reporting) plugin and then set the report configuration programmatically in the code.
+  * Add this dependency into your POM.xml and remove the previous `maven-cucumber-reporting` dependency as well as its configuration because they are not needed anymore.
+  * Now we need to code the configuration at a place which gets executed after all the tests are completed. We will make use of the TestNG `ISuiteListener` interface and implement a custom listener.
+  * The configuration for the report generation will go into `onFinish(ISuite suite)`
+  * We are specifying the paths for generated cucumber json reports for the masterthought report to build the report from.
+  * Then we are adding some classification properties that will be displayed on the report dashboard.
+  * The classification file `project.properties` get its properties updated at runtime from the POM.xml file with the help of maven resources plugin that we setup earlier.
+  * In the end, we are adding a different qualifier for each of the report to be able to visualize and differentiate the features in report based on test.
+  * 
+  ```java
+  public class SuiteListener implements ISuiteListener {
+  @Override
+  public void onStart(ISuite suite) {
+  ISuiteListener.super.onStart(suite);
+  }
+  
+      @Override
+      public void onFinish(ISuite suite) {
+          //ISuiteListener.super.onFinish(suite);
+    
+          File reportOutputDirectory = new File("target");
+          List<String> jsonFiles = new ArrayList<>();
+          jsonFiles.add("target/cucumber/android-cucumber-report.json");
+          jsonFiles.add("target/cucumber/ios-cucumber-report.json");
+  
+          String buildNumber = "1";
+          String projectName = "Appium-BDD-Framework";
+  
+          Configuration configuration = new Configuration(reportOutputDirectory, projectName);
+          // optional configuration - check javadoc for details
+          configuration.setBuildNumber(buildNumber);
+          configuration.addPresentationModes(PresentationMode.PARALLEL_TESTING);
+          configuration.setSortingMethod(SortingMethod.NATURAL);
+  
+          // do not make scenario failed when step has status SKIPPED
+          //configuration.setNotFailingStatuses(Collections.singleton(Status.SKIPPED));
+  
+          // addidtional metadata presented on main page
+          configuration.addClassifications("Server IP", System.getProperty("APPIUM_SERVER_IP_ADDRESS"));
+  
+          // optionally add metadata presented on main page via properties file
+          List<String> classificationFiles = new ArrayList<>();
+          classificationFiles.add("target//classes//project.properties");
+          configuration.addClassificationFiles(classificationFiles);
+  
+          // optionally specify qualifiers for each of the report json files
+          configuration.setQualifier("android-cucumber-report", System.getProperty("ANDROID_INFO"));
+          configuration.setQualifier("ios-cucumber-report", System.getProperty("IOS_INFO"));
+  
+          ReportBuilder reportBuilder=new ReportBuilder(jsonFiles,configuration);
+          Reportable result=reportBuilder.generateReports();
+          // and here validate 'result' to decide what to do if report has failed
+    
+      }
+  
+  }
+  ```
+  * You may have noticed that we are getting the system properties `ANDROID_INFO` and `IOS_INFO` and setting them as
+    qualifiers. Well we create these properties at runtime based on testng parameters and set them in base runner as
+    follows. Also I have added an extra parameter of platformVersion for better information. You need to add it in
+    testng.xml and Global Params for it to work.
+  ```java
+  switch (platformName) {
+      case "Android" -> {
+          params.setSystemPort(systemPort);
+          params.setChromeDriverPort(chromeDriverPort);
+          System.setProperty("ANDROID_INFO", params.getPlatformName() + "  " + params.getplatformVersion() + " | " + params.getDeviceName());
+      }
+      case "iOS" -> {
+          params.setWdaLocalPort(wdaLocalPort);
+          System.setProperty("IOS_INFO",  params.getPlatformName() + "  " + params.getplatformVersion() + " | " + params.getDeviceName());
+      }
+  }
+  ```
+  * We also added the Server IP information as system property from server manager class to be able to use it in report.
+  * Add this listener to your testng.xml which look like this (replace with your path)
+  ```xml
+  <listeners>
+        <listener class-name="com.itkhanz.listeners.SuiteListener" />
+  </listeners>
+  ```
+  * Run tests with:
+    * `mvn clean test`
+  * This will start both the tests from testng.xml in parallel on iOS and Android, and at the end of test execution,
+    single report will be generated in the project build directory under `target/cucumber-html-reports` folder for the complete test run without the test results being overwritten by the
+    subsequent run of same features on different device.
+* This is how the report will look like:
+
+<img src="doc/report-testng-overview.png" width="1200">
+
+* As you can see in the below image, we get the project properties from classifications added into report dashboard:
+
+<img src="doc/report-testng-classification.png">
+
+* Also, we can differentiate the feature files based on the quantifiers added based on platform and device:
+
+<img src="doc/report-testng-qualifiers.png" width="1200">
+
+* We also need to be able to differentiate the console logs from both the devices because this time we are running the
+  tests from single JVM process, so I added the routing to console appender also.
+* The updated log4j2.xml will look like as follows:
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="ERROR">
+    <Appenders>
+        <Routing name="MyRoutingConsoleAppender">
+            <Routes pattern="$${ctx:ROUTINGKEY}">
+                <Route>
+                    <Console name="STDOUT-${ctx:ROUTINGKEY}" target="SYSTEM_OUT">
+                        <PatternLayout pattern="[${ctx:ROUTINGKEY} %-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} %c:%L - %m%n"/>
+                    </Console>
+                </Route>
+            </Routes>
+        </Routing>
+        <Routing name="MyRoutingFileAppender">
+            <Routes pattern="$${ctx:ROUTINGKEY}">
+                <Route>
+                    <RollingFile
+                            name="appender-${ctx:ROUTINGKEY}"
+                            fileName="${ctx:ROUTINGKEY}/application.log"
+                            filePattern="${ctx:ROUTINGKEY}/$${date:yyyy-MM-dd}/application-%d{yyyy-MM-dd}-%i.log">
+                        <PatternLayout>
+                            <Pattern>[${ctx:ROUTINGKEY} %-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} %c{1}:%L - %m%n</Pattern>
+                        </PatternLayout>
+                        <Policies>
+                            <TimeBasedTriggeringPolicy />
+                            <SizeBasedTriggeringPolicy size="10MB" />
+                        </Policies>
+                        <DefaultRolloverStrategy max="5" />
+                    </RollingFile>
+                </Route>
+            </Routes>
+        </Routing>
+    </Appenders>
+    <Loggers>
+        <Logger name="com.itkhanz" level="debug" additivity="false">
+            <AppenderRef ref="MyRoutingConsoleAppender"/>
+            <AppenderRef ref="MyRoutingFileAppender"/>
+        </Logger>
+        <Root level="info">
+            <AppenderRef ref="MyRoutingConsoleAppender"/>
+        </Root>
+    </Loggers>
+</Configuration>
+```
+* As you can see from the image, we can differentiate the logs from console as well:
+
+<img src="doc/logs-console-routing.png">
 
 ---

@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="ERROR">
     <Appenders>
-        <Console name="STDOUT" target="SYSTEM_OUT">
-            <PatternLayout pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} %c:%L - %m%n"/>
-        </Console>
-        <Routing name="MyRoutingAppender">
+        <Routing name="MyRoutingConsoleAppender">
+            <Routes pattern="$${ctx:ROUTINGKEY}">
+                <Route>
+                    <Console name="STDOUT-${ctx:ROUTINGKEY}" target="SYSTEM_OUT">
+                        <PatternLayout pattern="[${ctx:ROUTINGKEY} %-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} %c:%L - %m%n"/>
+                    </Console>
+                </Route>
+            </Routes>
+        </Routing>
+        <Routing name="MyRoutingFileAppender">
             <Routes pattern="$${ctx:ROUTINGKEY}">
                 <Route>
                     <RollingFile
@@ -26,11 +32,11 @@
     </Appenders>
     <Loggers>
         <Logger name="com.itkhanz" level="debug" additivity="false">
-            <AppenderRef ref="STDOUT"/>
-            <AppenderRef ref="MyRoutingAppender"/>
+            <AppenderRef ref="MyRoutingConsoleAppender"/>
+            <AppenderRef ref="MyRoutingFileAppender"/>
         </Logger>
         <Root level="info">
-            <AppenderRef ref="STDOUT"/>
+            <AppenderRef ref="MyRoutingConsoleAppender"/>
         </Root>
     </Loggers>
 </Configuration>
