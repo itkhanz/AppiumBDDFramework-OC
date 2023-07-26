@@ -33,7 +33,7 @@ public class MyTestNGRunnerTest {
                 "wdaLocalPort"})
     @BeforeClass(alwaysRun = true)
     public void setUpClass(ITestContext context,
-                           String platformName, String udid, String deviceName,
+                           String platformName, String deviceName, String udid,
                            @Optional("10000")String systemPort,
                            @Optional("11000")String chromeDriverPort,
                            @Optional("8100")String wdaLocalPort) {
