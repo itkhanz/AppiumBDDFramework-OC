@@ -320,6 +320,8 @@
   maven command.
 * So we will initialize GlobalParams in the BeforeClass of testng using setters.
 * Move the server start and stop from cucumber hooks to testng before and after class.
-* 
+* Change the assertions from JUnit to TestNG
+* Run the tests with:
+  * `mvn clean test -D"platformName=Android" -D"deviceName=Pixel_5" -D"cucumber.plugin=json:cucumber-reports/Android/Pixel_5/cucumber-report.json"`
 
 ---

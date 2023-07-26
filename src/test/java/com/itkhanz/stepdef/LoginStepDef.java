@@ -4,7 +4,7 @@ import com.itkhanz.pages.LoginPage;
 import com.itkhanz.pages.ProductsPage;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.junit.Assert;
+import org.testng.Assert;
 
 public class LoginStepDef {
     @When("I enter username as {string}")

@@ -10,7 +10,7 @@ import org.testng.xml.XmlTest;
 import static io.cucumber.testng.CucumberOptions.SnippetType.CAMELCASE;
 
 @CucumberOptions(
-        features = {"src/test/resources/features"}
+        features = {"src/test/resources/features/login.feature"}
         ,glue = {"com.itkhanz.stepdef"}
         ,snippets = CAMELCASE
         ,dryRun=false
